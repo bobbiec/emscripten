@@ -20,6 +20,13 @@ See docs/process.md for more on how version tagging works.
 
 2.0.21
 ------
+- Default shadow stack size used by emscripten reduced from 5Mb to 1Mb.  Anyone
+  running into issues can restore the old size using `-sTOTAL_STACK=5Mb`.  Since
+  windows has max stack of 1Mb and since WebAssembly stack usage should be less
+  than on native platforms (since its only used for address taken values) it
+  seems like 1Mb might still be on the high side here.  For reference, llvm
+  (`wasm-ld`) use 64kb as the default stack size.  `DEFAULT_PTHREAD_STACK_SIZE`
+  was also reduced from 2Mb to 1Mb to match primary stack.
 - The WebAssembly linker (`wasm-ld`) now performes string tail merging on any
   static string data in your program.   This has long been part of the native
   ELF linker and should not be observable in well-behaved programs.  This
